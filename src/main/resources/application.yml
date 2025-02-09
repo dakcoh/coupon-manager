@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: coupon
+  lettuce:
+    pool:
+      max-active: 8
+      max-idle: 8
+      min-idle: 0
+      max-wait-duration: -1ms
+  data:
+    redis:
+      timeout: 2000ms
+      password: your_redis_password
+      port: 6379
+      host: localhost
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true  # SQL 쿼리 포맷 설정
+        show_sql: true    # SQL 쿼리 로그 출력
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 40
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
