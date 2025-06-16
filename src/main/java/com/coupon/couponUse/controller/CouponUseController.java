@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * 쿠폰 사용 관련 API 엔드포인트를 제공하는 컨트롤러입니다.
  */
 @RestController
-@RequestMapping("/api/coupons/use")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CouponUseController {
     private static final Logger log = LoggerFactory.getLogger(CouponUseController.class);
@@ -26,7 +26,7 @@ public class CouponUseController {
     /**
      * 쿠폰 사용을 처리합니다.
      */
-    @PostMapping
+    @PostMapping("/coupons/use")
     public ResponseEntity<CouponUseResponse> useCoupon(@RequestBody CouponUseRequest request) {
         log.info("IN : {}", JacksonUtil.toJson(request));
 

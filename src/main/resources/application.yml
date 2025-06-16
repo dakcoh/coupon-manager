@@ -10,7 +10,6 @@ spring:
   data:
     redis:
       timeout: 2000ms
-      password: your_redis_password
       port: 6379
       host: localhost
   jpa:
@@ -22,7 +21,7 @@ spring:
         show_sql: true    # SQL 쿼리 로그 출력
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/test
+    url: jdbc:h2:tcp://localhost/~/coupon;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE;IFEXISTS=FALSE
     username: sa
     password:
     hikari:

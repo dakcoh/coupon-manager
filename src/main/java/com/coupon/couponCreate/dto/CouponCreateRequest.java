@@ -19,6 +19,7 @@ public class CouponCreateRequest {
     private String couponCode;
 
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Future(message = "만료일은 현재 시각 이후여야 합니다.")
     private LocalDateTime expirationDate;
 

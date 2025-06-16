@@ -17,7 +17,7 @@ import org.slf4j.Logger;
  * 쿠폰 생성 관련 API 엔드포인트를 제공하는 컨트롤러입니다.
  */
 @RestController
-@RequestMapping("/api/coupons/create")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CouponCreateController {
     private static final Logger log = LoggerFactory.getLogger(CouponCreateController.class);
@@ -27,7 +27,7 @@ public class CouponCreateController {
     /**
      * 쿠폰을 생성합니다.
      */
-    @PostMapping
+    @RequestMapping(value = "/coupons/create", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<CouponCreateResponse> createCoupon(@RequestBody CouponCreateRequest request) {
         log.info("IN : {}", JacksonUtil.toJson(request));
 

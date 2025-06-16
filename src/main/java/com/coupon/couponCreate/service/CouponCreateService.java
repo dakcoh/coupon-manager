@@ -6,6 +6,7 @@ import com.coupon.domain.Coupon;
 import com.coupon.domain.CouponStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
 
@@ -31,6 +32,10 @@ public class CouponCreateService {
                 .status(CouponStatus.fromCode("0001"))
                 .build();
 
-        return couponCreateRepository.save(coupon);
+        try {
+            return couponCreateRepository.save(coupon);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("중복된 쿠폰 코드입니다.");
+        }
     }
 }

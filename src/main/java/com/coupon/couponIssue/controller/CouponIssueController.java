@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * 쿠폰 지급 관련 API 엔드포인트를 제공하는 컨트롤러입니다.
  */
 @RestController
-@RequestMapping("/api/coupons/issue")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CouponIssueController {
     private static final Logger log = LoggerFactory.getLogger(CouponIssueController.class);
@@ -31,8 +31,8 @@ public class CouponIssueController {
     /**
      * 쿠폰 지급 요청을 처리합니다.
      */
-    @PostMapping
-    public ResponseEntity<CouponIssueResponse> issueCoupon(@RequestBody CouponIssueRequest request) throws JsonProcessingException {
+    @PostMapping("/coupons/issue")
+    public ResponseEntity<CouponIssueResponse> issueCoupon(@RequestBody CouponIssueRequest request) {
         log.info("IN : {}", JacksonUtil.toJson(request));
 
         UserCoupon UserCoupon = couponFacade.issueCoupon(request);
