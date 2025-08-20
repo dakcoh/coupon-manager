@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_coupons")
-@Getter
+@Data
 @ToString
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +37,19 @@ public class UserCoupon {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private CouponStatus status;
+
+    public void transit(CouponStatus target) {
+        this.status.validateTransition(target);
+        this.status = target;
+
+        if(target == CouponStatus.USED) {
+            this.usedDate = LocalDateTime.now();
+        }
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expirationDate);
+    }
 
     @PrePersist
     protected void onIssue() {
