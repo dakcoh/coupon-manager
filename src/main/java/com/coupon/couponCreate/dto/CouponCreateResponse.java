@@ -1,22 +1,17 @@
 package com.coupon.couponCreate.dto;
 
 import com.coupon.domain.CouponStatus;
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * 쿠폰 생성 결과를 클라이언트에 전달하는 응답 DTO입니다.
- */
-@Data
-@Builder
-public class CouponCreateResponse {
-    private Long id;
-    private String couponId;
-    private String couponCode;
-    private LocalDateTime createdDate;
-    private LocalDateTime expirationDate;
-    private double discountAmount;
-    private CouponStatus status;
-}
+public record CouponCreateResponse(
+        Long id,
+        String couponId,
+        String couponCode,
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime createdDate,
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime expirationDate,
+        BigDecimal discountAmount,
+        CouponStatus status
+) {}

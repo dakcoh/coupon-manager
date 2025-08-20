@@ -2,7 +2,10 @@ package com.coupon.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "coupons")
@@ -16,46 +19,48 @@ public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "coupon_id", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String couponId;
 
-    @Column(name = "coupon_code", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String couponCode;
 
-    @Column(name = "created_date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    @Column(name = "expiration_date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime expirationDate;
 
-    @Column(name = "discount_amount")
-    private double discountAmount;
+    @Column(nullable = false, precision = 19, scale = 2)
+    private BigDecimal discountAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false, length = 16)
     private CouponStatus status;
 
     @PrePersist
     protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
+        if (createdDate == null) createdDate = LocalDateTime.now();
+        if (couponId == null) couponId = UUID.randomUUID().toString();
+        if (status == null) status = CouponStatus.AVAILABLE;
     }
 
-    /**
-     * 쿠폰의 유효성을 검사
-     * 쿠폰이 사용 가능 상태이며 아직 만료되지 않았는지를 확인합니다.
-     * 만약 만료되었다면 상태를 EXPIRED("0003")로 업데이트합니다.
-     */
-    public boolean isValid() {
-        if (!this.status.equals(CouponStatus.fromCode("0001"))) {
-            return false;
-        }
-        if (LocalDateTime.now().isAfter(expirationDate)) {
-            this.status = CouponStatus.fromCode("0003");
-            return false;
-        }
-        return true;
+    public static Coupon create(String code, LocalDateTime expirationDate, BigDecimal discountAmount) {
+        if (code == null || code.isBlank())
+            throw new IllegalArgumentException("쿠폰 코드는 필수입니다.");
+        if (expirationDate == null || !expirationDate.isAfter(LocalDateTime.now()))
+            throw new IllegalArgumentException("만료일은 현재 시각 이후여야 합니다.");
+        if (discountAmount == null || discountAmount.compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("할인 금액은 0 이상이어야 합니다.");
+
+        return Coupon.builder()
+                .couponCode(code)
+                .expirationDate(expirationDate)
+                .discountAmount(discountAmount)
+                .status(CouponStatus.AVAILABLE)
+                .build();
     }
 }
