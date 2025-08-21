@@ -48,6 +48,28 @@ public class Coupon {
         if (status == null) status = CouponStatus.AVAILABLE;
     }
 
+    /** 만료 여부 */
+    public boolean isExpiredNow() {
+        return java.time.LocalDateTime.now().isAfter(expirationDate);
+    }
+
+    /** 필요 시 만료로 전이 */
+    public boolean expireIfNeeded() {
+        if (status == CouponStatus.AVAILABLE && isExpiredNow()) {
+            status = CouponStatus.EXPIRED;
+            return true;
+        }
+        return false;
+    }
+
+    /** 발급 가능 보장 */
+    public void ensureIssuable() {
+        expireIfNeeded();
+        if (status != CouponStatus.AVAILABLE) {
+            throw new IllegalStateException("발급 불가 상태의 쿠폰입니다.");
+        }
+    }
+
     public static Coupon create(String code, LocalDateTime expirationDate, BigDecimal discountAmount) {
         if (code == null || code.isBlank())
             throw new IllegalArgumentException("쿠폰 코드는 필수입니다.");

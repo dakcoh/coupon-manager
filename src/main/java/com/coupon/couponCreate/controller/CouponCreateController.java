@@ -9,6 +9,7 @@ import com.util.JacksonUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +26,18 @@ import java.net.URI;
 public class CouponCreateController {
     private static final Logger log = LoggerFactory.getLogger(CouponCreateController.class);
 
-    private final CouponCreateMapper couponCreateMapper;
-    private final CouponFacade couponFacade;
+    private final CouponCreateMapper mapper;
+    private final CouponFacade facade;
 
     /**
      * 쿠폰을 생성합니다.
      */
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CouponCreateResponse> createCoupon(@Valid @RequestBody CouponCreateRequest request) {
         log.info("IN : {}", JacksonUtil.toJson(request));
 
-        Coupon saved = couponFacade.createCoupon(request);
-        CouponCreateResponse response = couponCreateMapper.toDto(saved);
+        Coupon saved = facade.createCoupon(request);
+        CouponCreateResponse response = mapper.toDto(saved);
 
         log.info("OUT : {}", JacksonUtil.toJson(response));
 

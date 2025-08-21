@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CouponIssueMapper {
 
-    public CouponIssueResponse toDto(UserCoupon userCoupon) {
-        return CouponIssueResponse.builder()
-                .couponId(userCoupon.getCouponId())
-                .issuedDate(userCoupon.getIssuedDate())
-                .expirationDate(userCoupon.getExpirationDate())
-                .status(userCoupon.getStatus())
-                .build();
+    public CouponIssueResponse toDto(UserCoupon uc) {
+        return new CouponIssueResponse(
+                uc.getCouponId(),
+                uc.getIssuedDate(),
+                uc.getExpirationDate(),
+                uc.getStatus()
+        );
     }
 }
