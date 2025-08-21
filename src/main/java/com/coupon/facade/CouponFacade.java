@@ -29,8 +29,8 @@ public class CouponFacade {
     /**
      * 특정 쿠폰을 사용자에게 지급합니다.
      */
-    public UserCoupon issueCoupon(CouponIssueRequest request) {
-        return couponIssueService.issueCoupon(request);
+    public UserCoupon issueCoupon(String couponId, String userId) {
+        return couponIssueService.issueCoupon(couponId, userId);
     }
 
     /**
