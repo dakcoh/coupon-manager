@@ -10,16 +10,15 @@ import org.springframework.stereotype.Component;
 @Builder
 @Component
 public class CouponCreateMapper {
-
-    public CouponCreateResponse toDto(Coupon coupon) {
-        return CouponCreateResponse.builder()
-                .id(coupon.getId())
-                .couponId(coupon.getCouponId())
-                .couponCode(coupon.getCouponCode())
-                .createdDate(coupon.getCreatedDate())
-                .expirationDate(coupon.getExpirationDate())
-                .discountAmount(coupon.getDiscountAmount())
-                .status(coupon.getStatus())
-                .build();
+    public CouponCreateResponse toDto(Coupon c) {
+        return new CouponCreateResponse(
+                c.getId(),
+                c.getCouponId(),
+                c.getCouponCode(),
+                c.getCreatedDate(),
+                c.getExpirationDate(),
+                c.getDiscountAmount(),
+                c.getStatus()
+        );
     }
 }
