@@ -1,6 +1,5 @@
 package com.coupon.facade;
 
-import com.coupon.couponIssue.dto.CouponIssueRequest;
 import com.coupon.couponUse.dto.CouponUseRequest;
 import com.coupon.domain.Coupon;
 import com.coupon.couponCreate.dto.CouponCreateRequest;
