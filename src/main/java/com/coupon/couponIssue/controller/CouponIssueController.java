@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 /**
  * 쿠폰 지급 관련 API 엔드포인트를 제공하는 컨트롤러입니다.
  */
 @RestController
-@RequestMapping("/api/coupons/{couponId}")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CouponIssueController {
     private static final Logger log = LoggerFactory.getLogger(CouponIssueController.class);
@@ -30,7 +32,7 @@ public class CouponIssueController {
     /**
      * 쿠폰 지급 요청을 처리합니다.
      */
-    @PostMapping("/coupons/issue")
+    @PostMapping(value = "/user-coupons", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<CouponIssueResponse> issueCoupon(@Valid @RequestBody CouponIssueRequest request) {
         log.info("{} IN : {}", request.couponId(), JacksonUtil.toJson(request));
 

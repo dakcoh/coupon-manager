@@ -15,9 +15,6 @@ import java.util.Optional;
  */
 @Repository
 public interface CouponIssueRepository extends JpaRepository<UserCoupon, Long> {
-    // couponId를 기준으로 조회하는 메서드 추가
-    Optional<UserCoupon> findByCouponId(String couponId);
-
     // 특정 사용자가 특정 쿠폰을 발급받았는지 여부 확인
     boolean existsByUserIdAndCouponId(String userId, String couponId);
 }
