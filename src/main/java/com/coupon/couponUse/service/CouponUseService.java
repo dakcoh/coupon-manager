@@ -16,30 +16,19 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CouponUseService {
 
-    private final CouponUseRepository couponUseRepository;
-    private final CouponIssueRepository couponIssueRepository;
+    private final CouponUseRepository repository;
 
-    /**
-     * 주어진 couponId에 대해 쿠폰 사용을 처리합니다.
-     * 1. 쿠폰 조회
-     * 2. 쿠폰 유효성 검사
-     * 3. 상태 변경
-     * 4. JPA dirty checking
-     */
     @Transactional
-    public UserCoupon useCoupon(CouponUseRequest request) {
-        UserCoupon userCoupon = couponIssueRepository.findByCouponId(request.getCouponId())
-                .orElseThrow(() -> new IllegalArgumentException("쿠폰을 찾을 수 없습니다."));
+    public UserCoupon useCoupon(Long userCouponId, String userId) {
+        UserCoupon uc = repository.findByIdForUpdate(userCouponId)
+                .orElseThrow(() -> new IllegalArgumentException("발급 쿠폰을 찾을 수 없습니다."));
 
-        if (!userCoupon.getUserId().equals(request.getUserId())) {
-            throw new IllegalStateException("해당 쿠폰은 다른 사용자가 발급받았습니다.");
+        if (!uc.getUserId().equals(userId)) {
+            throw new IllegalStateException("해당 사용자의 쿠폰이 아닙니다.");
         }
-        if (userCoupon.isExpired()) {
-            throw new IllegalStateException("쿠폰이 만료되었습니다.");
-        }
+        uc.expire();
+        uc.use();
 
-        userCoupon.transit(CouponStatus.USED);
-
-        return userCoupon;
+        return uc;
     }
 }
