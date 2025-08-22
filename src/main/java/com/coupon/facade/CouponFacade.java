@@ -35,7 +35,7 @@ public class CouponFacade {
     /**
      * 사용자가 쿠폰을 사용하도록 처리합니다.
      */
-    public UserCoupon useCoupon(CouponUseRequest request) {
-        return couponUseService.useCoupon(request);
+    public UserCoupon useCoupon(Long userCouponId, String userId) {
+        return couponUseService.useCoupon(userCouponId, userId);
     }
 }

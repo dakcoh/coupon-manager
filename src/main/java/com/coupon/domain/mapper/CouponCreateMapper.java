@@ -2,12 +2,8 @@ package com.coupon.domain.mapper;
 
 import com.coupon.domain.Coupon;
 import com.coupon.couponCreate.dto.CouponCreateResponse;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@NoArgsConstructor
-@Builder
 @Component
 public class CouponCreateMapper {
     public CouponCreateResponse toDto(Coupon c) {
