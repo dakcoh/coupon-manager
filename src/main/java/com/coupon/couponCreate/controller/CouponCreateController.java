@@ -9,7 +9,6 @@ import com.util.JacksonUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +16,13 @@ import org.slf4j.Logger;
 
 import java.net.URI;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 /**
  * 쿠폰 생성 관련 API 엔드포인트를 제공하는 컨트롤러입니다.
  */
 @RestController
-@RequestMapping("/api/coupons")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CouponCreateController {
     private static final Logger log = LoggerFactory.getLogger(CouponCreateController.class);
@@ -32,7 +33,7 @@ public class CouponCreateController {
     /**
      * 쿠폰을 생성합니다.
      */
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/coupons", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<CouponCreateResponse> createCoupon(@Valid @RequestBody CouponCreateRequest request) {
         log.info("IN : {}", JacksonUtil.toJson(request));
 

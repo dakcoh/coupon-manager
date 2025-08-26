@@ -1,6 +1,5 @@
 package com.coupon.facade;
 
-import com.coupon.couponUse.dto.CouponUseRequest;
 import com.coupon.domain.Coupon;
 import com.coupon.couponCreate.dto.CouponCreateRequest;
 import com.coupon.couponCreate.service.CouponCreateService;
@@ -35,7 +34,7 @@ public class CouponFacade {
     /**
      * 사용자가 쿠폰을 사용하도록 처리합니다.
      */
-    public UserCoupon useCoupon(CouponUseRequest request) {
-        return couponUseService.useCoupon(request);
+    public UserCoupon useCoupon(Long userCouponId, String userId) {
+        return couponUseService.useCoupon(userCouponId, userId);
     }
 }
