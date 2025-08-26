@@ -1,15 +1,8 @@
 package com.coupon.couponIssue.repository;
 
-import com.coupon.domain.Coupon;
 import com.coupon.domain.UserCoupon;
-import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
-
 /**
  * 쿠폰 발급 관련 데이터베이스 연산을 담당하는 Repository입니다.
  */

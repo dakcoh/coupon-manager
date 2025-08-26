@@ -1,16 +1,10 @@
 package com.coupon.couponUse.service;
 
-import com.coupon.couponCreate.repository.CouponCreateRepository;
-import com.coupon.couponIssue.repository.CouponIssueRepository;
-import com.coupon.couponUse.dto.CouponUseRequest;
 import com.coupon.couponUse.repository.CouponUseRepository;
 import com.coupon.domain.UserCoupon;
-import com.coupon.domain.CouponStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
