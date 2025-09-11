@@ -6,15 +6,10 @@ import com.coupon.domain.UserCoupon;
 import com.coupon.domain.repository.CouponRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import com.coupon.config.RedisLockManager;
 import java.time.Duration;
-import java.util.UUID;
 
-/**
- * 쿠폰 지급 로직을 처리하는 서비스입니다.
- * Redis를 이용하여 분산 락을 적용함으로써 동시 요청 시 데이터 정합성을 보장합니다.
- */
 @Service
 @RequiredArgsConstructor
 public class CouponIssueService {
@@ -23,16 +18,17 @@ public class CouponIssueService {
 
     private final CouponIssueRepository couponIssueRepository;
     private final CouponRepository couponRepository;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisLockManager lockManager;
 
     @Transactional
     public UserCoupon issueCoupon(String couponId, String userId) {
         String lockKey = LOCK_PREFIX + couponId;
-        String token = UUID.randomUUID().toString();
 
-        Boolean lockAcquired = redisTemplate.opsForValue().setIfAbsent(lockKey, token, LOCK_TTL);
-
-        if (!Boolean.TRUE.equals(lockAcquired)) throw new IllegalStateException("다른 요청이 진행 중입니다. 잠시 후 다시 시도해 주세요.");
+        // 락 획득
+        String token = lockManager.acquire(lockKey, LOCK_TTL);
+        if (token == null) {
+            throw new IllegalStateException("다른 요청이 진행 중입니다. 잠시 후 다시 시도해 주세요.");
+        }
 
         try {
             // 원본 쿠폰 조회
@@ -51,10 +47,8 @@ public class CouponIssueService {
 
             return couponIssueRepository.save(userCoupon);
         } finally {
-            String owner = redisTemplate.opsForValue().get(lockKey);
-            if (token.equals(owner)) {
-                redisTemplate.delete(lockKey);
-            }
+            // 소유자 토큰 일치 시에만 안전하게 해제
+            lockManager.release(lockKey, token);
         }
     }
 }
